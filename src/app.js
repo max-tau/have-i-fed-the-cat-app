@@ -1,7 +1,8 @@
 const express = require('express');
 
-const app = express();
 const { Cat } = require('./models');
+const app = express();
+
 
 app.use(express.json());
 
@@ -12,9 +13,17 @@ app.post('/cats', (req, res) => {
 app.get('/cats', (req, res) => {
     Cat.findAll({ where: req.query }).then(catList => res.status(200).json(catList))
 })
-app.get('cats/:id', (req, res) => {
+app.get('/cats/:id', (req, res) => {
     const { id } = req.params
-    Cat.find(id).then(catById => res.status(200).json(catById))
+    Cat.findOne({ where: { id: `${id}` }}).then(catById => res.status(200).json(catById))
+})
+app.patch('/cats/:id', (req, res) => {
+    const { id } = req.params
+    Cat.update(req.body, { where: { id: `${id}` }}).then(fedCat => res.status(200).json(fedCat))
+})
+app.delete('/cats/:id', (req, res) => {
+    const { id } = req.params
+    Cat.destroy({ where: { id: `${id}`}}).then(deletedCat => res.status(200).json(deletedCat))
 })
 
 module.exports = app;
