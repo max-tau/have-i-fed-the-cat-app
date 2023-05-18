@@ -8,7 +8,7 @@ const setUpDatabase = () => {
         dialect: "postgres"
     })
 
-    const Cat = CatModel(connection, sequelize)
+    const Cat = CatModel(connection, Sequelize)
 
     connection.sync({ alter: true });
 
